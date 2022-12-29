@@ -23,7 +23,7 @@ services:
     depends_on:
       - php
       - mysql
-      - npm
+#      - npm
     networks:
       - laravel
 
@@ -75,19 +75,19 @@ services:
     networks:
       - laravel
 
-  npm:
-    container_name: npm
-    image: node:current-alpine
-    volumes:
-      - ./src:/var/www/html
-    ports:
-      - "3000:3000"
-      - "3001:3001"
-      - "5173:5173"
-    working_dir: /var/www/html
-    networks:
-      - laravel
-    stdin_open: true
+#  npm:
+#    container_name: npm
+#    image: node:current-alpine
+#    volumes:
+#      - ./src:/var/www/html
+#    ports:
+#      - "3000:3000"
+#      - "3001:3001"
+#      - "5173:5173"
+#    working_dir: /var/www/html
+#    networks:
+#      - laravel
+#    stdin_open: true
 
   artisan:
     container_name: artisan

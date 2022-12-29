@@ -1,7 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route as R;
 use \Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\{
+    HomeController,
+    StreamController,
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +18,18 @@ use \Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+R::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/test', [App\Http\Controllers\TestController::class, 'index'])->name('test');
+R::get('/', [StreamController::class, 'index'])->name('stream_list');
+
+R::group(['prefix' => 'stream', 'as' => 'stream.'], static function () {
+    R::get('/index', [StreamController::class, 'index'])->name('index');
+
+    R::get('/view/{stream}', [StreamController::class, 'view'])->name('view');
+
+    R::group(['middleware' => 'auth'], static function () {
+        R::get('/add_form', [StreamController::class, 'viewAddPage']);
+        R::post('/store', [StreamController::class, 'store'])->name('add.post');
+    });
+});
